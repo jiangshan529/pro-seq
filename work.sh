@@ -4,7 +4,7 @@ hg38chrominfo=/broad/boxialab/shawn/projects/genome_sequence/human/hg38/hg38.cle
 zcat ${prefix}.fastq.gz | fastx_clipper -a GATCGTCGGACTGTAGAACTCTGAAC -l 34 -d 0 -c -n -v -M 26 -o ${prefix}.fastq
 umi_tools extract --stdin=${prefix}.fastq --bc-pattern=NNNNNN --log=${prefix}.log --stdout ${prefix}.fastq.gz --3prime
 cutadapt -u 7 -o ${prefix}_trim.fastq.gz ${prefix}.fastq.gz
-bowtie2 -p 16 --end-to-end --sensitive --no-unal -U ${prefix}_trim.fastq.gz -x /seq/epiprod02/kdong/SofiaSandbox/NanoNOMe/hg38.chrXYM | samtools view -@ 16 -Sb -q 20 -o ${prefix}_trim.bam
+bowtie2 -p 16 --end-to-end --sensitive --no-unal -U ${prefix}_trim.fastq.gz -x /seq/epiprod02/kdong/SofiaSandbox/NanoNOMe/hg38.chrXYM 2>${prefix}_bowtie2.log | samtools view -@ 16 -Sb -q 20 -o ${prefix}_trim.bam
 samtools sort -@ 8 ${prefix}_trim.bam -o ${prefix}_trim_sort.bam
 samtools index ${prefix}_trim_sort.bam
 umi_tools dedup -I ${prefix}_trim_sort.bam --output-stats=${prefix}_trim_sort_dedup.txt -S ${prefix}_trim_sort_dedup.bam
