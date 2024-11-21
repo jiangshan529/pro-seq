@@ -34,10 +34,12 @@ awk '$6 == "-"' ${prefix}/${prefix}_trim_sort_dedup.bed | genomeCoverageBed -i s
 awk '{$4=$4*-1; print}' ${prefix}/${prefix}_trim_sort_dedup_hg38_m.bedgraph > ${prefix}/${prefix}_trim_sort_dedup_hg38_minus.bedgraph
 
 # Step 12: Convert bedgraph to BigWig for positive strand
-bedGraphToBigWig ${prefix}/${prefix}_trim_sort_dedup_hg38_plus.bedgraph $hg38chrominfo ${prefix}/${prefix}_trim_sort_dedup_hg38_plus.bw
+sort -k1,1 -k2,2n ${prefix}/${prefix}_trim_sort_dedup_hg38_plus.bedgraph > ${prefix}/${prefix}_trim_sort_dedup_hg38_plus_sort.bedgraph
+bedGraphToBigWig  ${prefix}/${prefix}_trim_sort_dedup_hg38_plus_sort.bedgraph $hg38chrominfo  ${prefix}/${prefix}_trim_sort_dedup_hg38_plus_sort.bw
 
 # Step 13: Convert bedgraph to BigWig for negative strand
-bedGraphToBigWig ${prefix}/${prefix}_trim_sort_dedup_hg38_minus.bedgraph $hg38chrominfo ${prefix}/${prefix}_trim_sort_dedup_hg38_minus.bw
+sort -k1,1 -k2,2n ${prefix}/${prefix}_trim_sort_dedup_hg38_minus.bedgraph > ${prefix}/${prefix}_trim_sort_dedup_hg38_minus_sort.bedgraph
+bedGraphToBigWig ${prefix}/${prefix}_trim_sort_dedup_hg38_minus_sort.bedgraph $hg38chrominfo  ${prefix}/${prefix}_trim_sort_dedup_hg38_minus_sort.bw
 
 # Using genomecov for further bedgraph creation
 # Step 14: Generate genome coverage bedgraph for positive strand
